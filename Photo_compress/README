@@ -1,0 +1,28 @@
+structs.h : contine structura pentru un element din matricea de pixeli ce contine culoarea pt red, green si blue si structura pentru un nod din arborele asociat imaginii ce cuprinde tipul nodului (1 sau 0) culorile ce vor avea valori diferite de 0 pt un nod de tip frunza
+	si ponter catre cei 4 fii daca este un nod intern
+
+gridFunc.h : contine functiile necesare pentru matricea de pixeli, anume getMat() care creeaza matricea de pixeli necesara pentru cerinta 3 pentru a fi scrisa in fisierul ppm ce urmeaza a fi scris si functia freeGrid() care va elibera memoria alocata pentru matrice
+	
+treeFunc.h : contine functia createNode() care va aloca memorie pt un nod si returneaza pointer catre nodul alocat, functia createTree() care va
+	creea arborele asociat imaginii. Aceasta va parcurge matricea initiala pe portiuni, adica partea de top left, cea de top right, cea de bottom right si cea de bottom left, capetele de unde variaza variabilele i si j schimbandu se in functie de partea parcurs, astfel la fiecare apel recursiv se vor schimba in functie de partea parcursa.
+	Dupa ce partea dorita e parcursa si culorile calculate, vom creea un nod si vom calcula culorile dupa indicatiile date, iar apoi calculam mean ul, la fel dupa indicatii. Daca mean ul este mai mare decat factorul furnizat, vom apela functia recursiv creand 4 copii fiindca nodul curent nu va fi o frunza care sa contina culoare, iar in caz contrar, nodul ca primi valorile pentru red, green si blue.
+	Functia getMaxHeight() va returna nr de niveluri ale arborelui, facand un apel recursiv pentru fiecare fiu pana va ajunge la un nod null, de unde va calcula nivelul de pe ramura curenta, iar la sfarsit se vor compara, iar functia va returna cel mai adanc nivel.
+	Functia getMinHeight() functioneaza similar cu cea de getMaxHeight(), doar ca returneaza cel mai mic nivel din arbore.
+	Functiile writeLevel() si writeLevelOrder() ne vor folosi pentru a scrie nodurile in ordinea nivelurilor, printand culoarea nodului daca este de tip frunza.
+	Functia getNrLeaves() va numara cate frunze sunt in arbore, mergand recursiv pana ajunge la un nod de tip frunza pe care il numara.
+	Functia decomTree() va primi vectorul construit dupa ordinea nivelurilor ale arborelui original si nr de noduri. Parcurgem vectorul, iar deoarece arborele este de tip quadtree, ne putem folosi de formula urmatoare, copiii nodului la care ne aflam aflandu se la inceput imediat dupa radacina, iar j va fi 0, urmand ca j sa creasca, deoarece se vor inmulti cu 4 nr de noduri din arbore, iar daca nodul este de tip frunza nu l vom creste pe j fiindca nu mai trebuie sa trecem peste 4 noduri.
+	La final, functia freeTree() va elibera memoria alocata pt arbore.
+
+tema2.c : in main declaram variabilele pe care le vom folosi si fisierul de unde vom citi si pe cel unde vom scrie. Daca avem de facut prima cerinta si vom primi ca argument "-c1", nr task ului este 1	daca primim "-c2" nr taskului este 2, iar pt "-d" nr taskului este 3. Daca nr taskului este 1 sau 2 vom citi factorul de la argumentul de pe pozitia 2 si se va citi din fisierul ce se afla ca argument pe pozitia 3.
+
+	Daca task ul este 1 vom deschide fisierul unde scriem in mod text, iar pt task 2 in mod binar. Citim headerul din fisierul ppm. Apoi alocam memorie pentru un vector de pixeli unde vom retine toti pixelii din fisier pe care ii vom pune sub forma de matrice in matricea grid_mat, afland latimea si lungimea imaginii.
+	Cream un arbore pt imagine si ii aflam nr de niveluri si de frunze.
+	
+CERINTA 1: Daca	nr task ului este 1 vom scrie in fisier nr de frunze si de niveluri pe care le am aflat cu ajutorul functiilor descrise mai sus. Apoi vom afla nr nivelului unde se afla prima frunza pt
+	a calcula latura patratului cu cea mai mare zona ramasa nedivizata, impartind la jumatate latimea pana ajungem la prima frunza.
+
+CERINTA 2: Daca nr task ului este 2 vom scrie intr un fisier binar lungimea sau latimea imaginii, iar apoi ne vom folosi de functia writeLevelOrder() pt a scrie pe niveluri nodurile arborelui si la 
+	final dam free la memoria alocata pe parcurs.
+	
+CERINTA 3: Daca nr task ului este 3 vom scrie headerul fisierului ppm si apoi dintr un fisier binar de tipul celui creat la task 2 com construi vectorul vecDec(vectorul de decomprimare a imaginii) 				ordinea in care apar in fisier nodurile. Cu ajutorul functiei decomTree() vom reconstitui arborele. Dupa aceasta reconstruim matricea de pixeli folosind operatia inversa de la task 1 cu ajutorul	functiei getMat(). Dupa ce am scris haederul, vom scrie si culorile din matricea de pixeli in format binar.
+	La final eliberam memoria pt vectorul vecDec si matricea de pixeli si inchidem fisierul de unde am citit si pe cel de unde am scris.
